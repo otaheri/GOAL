@@ -1,0 +1,156 @@
+description: ''
+num_gpus: 1
+local_rank: 0
+use_cuda: true
+is_training: true
+logger_level: info
+use_half_precision: false
+pretrained: ''
+predict_offsets: true
+use_exp: 0.0
+debug: false
+seed: 3407
+cuda_id: 0
+chunk_size: 21
+n_epochs: 300
+n_inf_sample: 10
+output_folder: ''
+work_dir: ''
+results_base_dir: ''
+expr_ID: GNet_terminal
+summary_folder: summaries
+results_folder: results
+code_folder: code
+best_model: null
+summary_steps: 100
+backend: nccl
+checkpoint_folder: checkpoints
+checkpoint_steps: 1000
+eval_steps: 500
+float_dtype: float32
+max_duration: .inf
+max_iters: .inf
+network:
+  type: GNet
+  use_sync_bn: true
+  rnet_iter: 1
+  gnet_model:
+    n_neurons: 256
+    enc_in: 3770
+    prior_in: 1037
+    dec_in: 1037
+    dec_out: 1024
+    ref_in: 2535
+    drop_out: 0.3
+    latentD: 16
+  early_stopping:
+    monitor: val_loss
+    min_delta: 0.0
+    patience: 16
+    verbose: true
+    mode: min
+  lr_scheduler:
+    type: ReduceLROnPlateau
+    verbose: true
+    patience: 16
+optim:
+  type: adam
+  lr: 0.001
+  gtol: 1.0e-08
+  ftol: -1.0
+  maxiters: 100
+  num_epochs: 300
+  step: 30000
+  weight_decay: 0.0
+  weight_decay_bias: 0.0
+  bias_lr_factor: 1.0
+  sgd:
+    momentum: 0.9
+    nesterov: true
+  adam:
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+    amsgrad: false
+  rmsprop:
+    alpha: 0.99
+  scheduler:
+    type: none
+    gamma: 0.1
+    milestones: []
+    step_size: 1000
+    warmup_factor: 0.03333333333333333
+    warmup_iters: 500
+    warmup_method: linear
+body_model:
+  type: smplx
+  model_path: ''
+datasets:
+  batch_size: 128
+  use_equal_sampling: true
+  use_packed: true
+  use_face_contour: true
+  splits: {}
+  num_workers:
+    train: 6
+    val: 6
+    test: 0
+  dataset_dir: ''
+  objects_dir: ''
+  grab_path: ''
+  fps: 30
+  past_frames: 10
+  future_pred: 10
+  chunk_size: 21
+  model_path: ''
+  verts_sampled: consts/verts_ids_0512.npy
+  verts_feet: consts/feet_verts_ids_0512.npy
+  rh2smplx_ids: consts/rhand_smplx_ids.npy
+  vertex_label_contact: consts/vertex_label_contact.npy
+losses:
+  edge:
+    type: l1
+    weight: 0.0
+  vertices:
+    type: l1
+    weight: 5.0
+  vertices_consist:
+    type: l1
+    weight: 0.0
+  rh_vertices:
+    type: l1
+    weight: 0.0
+  feet_vertices:
+    type: l1
+    weight: 0.0
+  pose:
+    type: l2
+    weight: 20.0
+  vertices_hd:
+    type: masked-l2
+    weight: 1.0
+    hd_fname: ''
+  velocity:
+    type: l2
+    weight: 1.0
+  acceleration:
+    type: l2
+    weight: 1.0
+  contact:
+    type: l1
+    weight: 0.0
+  dist_loss_exp: false
+  dist_loss_exp_v: true
+  kl_loss:
+    type: l1
+    weight: 0.0005
+  rh_faces: consts/rhand_faces.npy
+  vpe_path: consts/verts_per_edge_rh.npy
+  vpe_b_path: consts/verts_per_edge_body.npy
+  c_weights_path: consts/rhand_weight.npy
+  rh2smplx_idx: consts/rhand_smplx_ids.npy
+evaluation:
+  body:
+    v2v:
+    - procrustes
