@@ -66,7 +66,7 @@ For more details please refer to the [Paper](https://arxiv.org/abs/2112.11454) o
 
 
 ### GNet
-Below you can see some generated results from GNet:
+Below you can see some generated whole-body static grasps from GNet. The hand close-ups are from the same grasp, and for better visualization:
 
 |          Apple         |                 Binoculars                 |                   Toothpaste                    |
 |:--------------------------------:|:------------------------------------------:|:-----------------------------------------------:|
@@ -75,7 +75,7 @@ Below you can see some generated results from GNet:
 
 
 ### MNet
-Below you can see some generated results from MNet:
+Below you can see some generated whole-body motions that walk and grasp 3D objects using MNet:
 
 |                  Camera                  |                     Mug                     |                 Apple                |
 |:----------------------------------------:|:-------------------------------------------:|:------------------------------------------:|
