@@ -68,17 +68,17 @@ For more details please refer to the [Paper](https://arxiv.org/abs/2112.11454) o
 ### GNet
 Below you can see some generated whole-body static grasps from GNet. The hand close-ups are from the same grasp, and for better visualization:
 
-|          Apple         |                 Binoculars                 |                   Toothpaste                    |
-|:--------------------------------:|:------------------------------------------:|:-----------------------------------------------:|
-| ![Apple](images/s1_apple_rh.gif) | ![Binoculars](images/s4_binoculars_rh.gif) |   ![Toothpaste](images/s5_toothpaste_rh.gif)    |
-|  ![Apple](images/s1_apple.gif)   |  ![Binoculars](images/s4_binoculars.gif)   |     ![Toothpaste](images/s5_toothpaste.gif)     |
+|            Apple             |                 Binoculars                 |                 Toothpaste                 |
+|:--------------------------------:|:------------------------------------------:|:------------------------------------------:|
+| ![Apple](images/s1_apple_rh.gif) | ![Binoculars](images/s4_binoculars_rh.gif) | ![Toothpaste](images/s5_toothpaste_rh.gif) |
+|  ![Apple](images/s1_apple.gif)   |  ![Binoculars](images/s4_binoculars.gif)   |  ![Toothpaste](images/s5_toothpaste.gif)   |
 
 
 ### MNet
 Below you can see some generated whole-body motions that walk and grasp 3D objects using MNet:
 
-|                  Camera                  |                     Mug                     |                 Apple                |
-|:----------------------------------------:|:-------------------------------------------:|:------------------------------------------:|
+|                   Camera                    |                   Mug                    |                   Apple                    |
+|:-------------------------------------------:|:----------------------------------------:|:------------------------------------------:|
 | ![Camera](images/s2_camera_lift_motion.gif) | ![Mug](images/s6_mug_drink_2_motion.gif) | ![Apple](images/s1_apple_eat_1_motion.gif) |
 
 
@@ -119,13 +119,13 @@ This implementation:
 ## Requirements
 This package has the following requirements:
 
-* [Pytorch>=1.1.0](https://pytorch.org/get-started/locally/) 
-* Python >=3.6.0
+* [Pytorch>=1.7.1](https://pytorch.org/get-started/locally/) 
+* Python >=3.7.0
 * [pytroch3d >=0.2.0](https://pytorch3d.org/) 
 * [MANO](https://github.com/otaheri/MANO) 
 * [SMPLX](https://github.com/vchoutas/smplx) 
 * [bps_torch](https://github.com/otaheri/bps_torch) 
-* [psbody-mesh](https://github.com/MPI-IS/mesh) (for visualization)
+* [psbody-mesh](https://github.com/MPI-IS/mesh)
 
 ## Installation
 
