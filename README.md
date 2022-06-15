@@ -159,6 +159,23 @@ python data/process_gnet_data.py --grab-path /path/to/GRAB --smplx-path /path/to
 python data/process_mnet_data.py --grab-path /path/to/GRAB --smplx-path /path/to/smplx/models/
 ```
 
+#### GNet and MNet models
+- Please download the GNet and MNet models from our website and put them in the folders as below.
+```bash
+    GOAL
+    ├── models
+    │   │
+    │   ├── GNet_model.pt
+    │   ├── MNet_model.pt
+    │   └── ...
+    │   
+    │
+    .
+    .
+    .
+```
+
+
 #### SMPLX models
 - Download body models following the steps on the [SMPLX repo](https://github.com/vchoutas/smplx) (skip this part if you already followed this for [GRAB dataset](https://github.com/otaheri/GRAB)).
 
