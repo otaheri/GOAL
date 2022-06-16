@@ -280,6 +280,6 @@ We thank:
 ## Contact
 The code of this repository was implemented by [Omid Taheri](https://ps.is.tuebingen.mpg.de/person/otaheri) and [Vassilis Choutas](https://ps.is.tuebingen.mpg.de/person/vchoutas).
 
-For questions, please contact [goal@tue.mpg.de](goal@tue.mpg.de).
+For questions, please contact [goal@tue.mpg.de](mailto:goal@tue.mpg.de).
 
-For commercial licensing (and all related questions for business applications), please contact [ps-licensing@tue.mpg.de](ps-licensing@tue.mpg.de).
+For commercial licensing (and all related questions for business applications), please contact [ps-licensing@tue.mpg.de](mailto:ps-licensing@tue.mpg.de).
