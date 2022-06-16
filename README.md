@@ -139,7 +139,7 @@ To install the dependencies please follow the next steps:
 
 ## Getting started
 
-For a quick demo of GNet you can give it a try on [google-colab here]().
+For a quick demo of GNet you can give it a try on [google-colab here (Coming Soon)]().
 
 Inorder to use the GOAL models please follow the steps below:
 
