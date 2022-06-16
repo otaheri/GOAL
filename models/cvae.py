@@ -11,7 +11,7 @@
 # Any use of the computer program without a valid license is prohibited and liable to prosecution.
 # Contact: ps-license@tuebingen.mpg.de
 #
-import sys
+import sys, os
 sys.path.append('.')
 sys.path.append('..')
 import numpy as np
@@ -23,6 +23,7 @@ from tools.utils import rotmat2aa
 from tools.utils import d62rotmat
 from tools.utils import batch_to
 from tools.train_tools import point2point_signed
+cdir = os.path.dirname(sys.argv[0])
 
 
 class ResBlock(nn.Module):
@@ -93,7 +94,7 @@ class gnet_model(nn.Module):
 
         self.dout = nn.Dropout(p=.3, inplace=False)
 
-        self.f_ids = torch.from_numpy(np.load('/ps/project/grab/cvpr21/GRAB/sampled_verts/0512_verts/feet_verts_ids_0512.npy')).to(torch.long)
+        self.f_ids = torch.from_numpy(np.load(f'{cdir}/../consts/feet_verts_ids_0512.npy')).to(torch.long)
 
     def encode(self, enc_x):
 

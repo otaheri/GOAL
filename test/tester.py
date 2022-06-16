@@ -14,7 +14,6 @@
 import os
 import shutil
 import sys
-sys.path.append('../train')
 sys.path.append('..')
 import json
 import numpy as np
@@ -35,8 +34,8 @@ from tools.utils import smplx_loc2glob
 from bps_torch.bps import bps_torch
 
 from omegaconf import OmegaConf
-from models.mlp import grasp_motion_pose_xyz as grasp_motion_pose
-from models.cvae import cvae_grasp_static_gaze as cvae_grasp_static
+from models.mlp import mnet_model
+from models.cvae import gnet_model
 
 from data.mnet_dataloader import LoadData, build_dataloader
 
@@ -116,8 +115,8 @@ class Trainer:
 
         # Create the network
         self.n_out_frames = self.cfg.network.n_out_frames
-        self.network_motion = grasp_motion_pose(**cfg.network.grasp_motion).to(self.device)
-        self.network_static = cvae_grasp_static(**cfg_static.network.cvae_grasp_static).to(self.device)
+        self.network_motion = mnet_model(**cfg.network.mnet_model).to(self.device)
+        self.network_static = gnet_model(**cfg_static.network.gnet_model).to(self.device)
 
         self.cfg = cfg
         self.network_motion.cfg = cfg
@@ -244,8 +243,8 @@ class Trainer:
         #####################################################
 
         z_enc = torch.distributions.normal.Normal(
-            loc=torch.zeros([1, self.cfg_static.network.cvae_grasp_static.latentD], requires_grad=False).to(self.device).type(self.dtype),
-            scale=torch.ones([1, self.cfg_static.network.cvae_grasp_static.latentD], requires_grad=False).to(self.device).type(self.dtype))
+            loc=torch.zeros([1, self.cfg_static.network.gnet_model.latentD], requires_grad=False).to(self.device).type(self.dtype),
+            scale=torch.ones([1, self.cfg_static.network.gnet_model.latentD], requires_grad=False).to(self.device).type(self.dtype))
 
         z_enc_s = z_enc.rsample()
         dec_x['z'] = z_enc_s

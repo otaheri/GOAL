@@ -199,11 +199,6 @@ class Trainer:
     def _get_network(self):
         return self.network_motion.module if isinstance(self.network, torch.nn.DataParallel) else self.network
 
-    def save_network(self):
-        torch.save(self.network_motion.module.state_dict()
-                   if isinstance(self.network, torch.nn.DataParallel)
-                   else self.network_motion.state_dict(), self.cfg.best_model)
-
     def forward(self, x):
 
         ##############################################
@@ -226,20 +221,10 @@ class Trainer:
 
 
         if self.use_exp == 0 or self.use_exp != -1:
-            # dec_x['feet_vel_exp']  = torch.exp(-self.use_exp * x['velocity'][:, 11-pf:11, self.f_ids.to(dev)].norm(dim=-1))
-            # dec_x['feet_dist_exp'] = torch.exp(-self.use_exp * x['verts'][:, 11-pf:11, self.f_ids.to(dev), 1])
             dec_x['vel'] = torch.exp(-self.use_exp * x['velocity'][:, 10:11].norm(dim=-1))
-            # dec_x['vel'] = torch.exp(-self.use_exp * x['velocity'][:, 10:11])
-            # dec_x['verts2obj_exp'] = torch.exp(-self.use_exp * x['verts2obj'][:, 11-pf:11])
-
             dec_x['verts_to_last_dist'] = torch.exp(-self.use_exp * verts2last.norm(dim=-1))
         else:
-            # dec_x['feet_vel'] = x['velocity'][:, 11-pf:11, self.f_ids.to(dev)].norm(dim=-1)
-            # dec_x['feet_dist'] = x['verts'][:, 11-pf:11, self.f_ids.to(dev), 1]
             dec_x['vel'] = x['velocity'][:, 10:11].norm(dim=-1)
-            # dec_x['vel'] = x['velocity'][:, 10:11]
-            # dec_x['verts2obj'] = x['verts2obj'][:, 11-pf:11]
-
             dec_x['verts_to_last_dist'] = verts2last.norm(dim=-1)
 
         dec_x['vel'] = x['velocity'][:, 10:11]
@@ -248,25 +233,13 @@ class Trainer:
 
         dec_x['bps_rh'] = x['bps_rh_glob']
 
-        ########### for the last frame
-        # verts2last = x['verts'][:, 10:11, self.rh_ids_sampled] - x['verts'][:,-1:, self.rh_ids_sampled]
-
-        # dec_x['verts_last'] = x['verts'][:,-1:]
-        # dec_x['pose_last'] = x['fullpose_rotmat'][:,-1:,:,:2,:]
-        # dec_x['trans_last'] = x['transl'][:,-1:]
-        # dec_x['rh_bps_last'] = x['bps_rh_glob'][:,-1:]
-
-        #####################################################
-
         dec_x = torch.cat([v.reshape(bs, -1).to(self.device) for v in dec_x.values()], dim=1)
 
         pose, trans, dist, rh2last = self.network_motion(dec_x)
-        # pose, trans, dist = self.network(dec_x)
 
         if self.predict_offsets:
             pose_rotmat = d62rotmat(pose).reshape(bs, self.n_out_frames, -1, 3, 3)
             pose = torch.matmul(pose_rotmat,x['fullpose_rotmat'][:, 10:11])
-            # pose = pose.reshape(bs,self.n_out_frames,-1) + x['fullpose_rotmat'][:, 10:11, :, :2, :].reshape(bs, 1, -1)
             trans = trans + torch.repeat_interleave(x['transl'][:, 10:11], self.n_out_frames, dim=1).reshape(trans.shape)
 
         pose = pose.reshape(bs*self.n_out_frames, -1)
@@ -371,10 +344,6 @@ class Trainer:
                                                feature_type=['deltas'],
                                                custom_basis=f_rh_bps)['deltas']
 
-            # f_refnet_params['f_bps_rh_rh'] = self.bps_torch.encode(x=f_verts[:, self.rhand_idx],
-            #                                   feature_type=['dists'],
-            #                                   custom_basis=f_rh_bps)['dists']
-
             refnet_in['f_refnet_in'] = torch.cat([f_params['fullpose_rotmat'][:,:,:2,:].reshape(FN, -1).to(self.device), f_params['transl'].reshape(FN, -1).to(self.device)]
                                   + [v.reshape(FN, -1).to(self.device) for v in f_refnet_params.values()], dim=1)
 
@@ -399,10 +368,6 @@ class Trainer:
             m_refnet_params['m_bps_obj_rh'] = self.bps_torch.encode(x=batch['verts_obj'][:,-1][males],
                                                feature_type=['deltas'],
                                                custom_basis=m_rh_bps)['deltas']
-
-            # refnet_params['m_bps_rh_rh'] = self.bps_torch.encode(x=m_verts[:, self.rhand_idx],
-            #                                   feature_type=['dists'],
-            #                                   custom_basis=m_rh_bps)['dists']
 
             refnet_in['m_refnet_in'] = torch.cat([m_params['fullpose_rotmat'][:, :, :2, :].reshape(MN, -1).to(self.device), m_params['transl'].reshape(MN, -1).to(self.device)]
                                     + [v.reshape(MN, -1).to(self.device) for v in m_refnet_params.values()], dim=1)
