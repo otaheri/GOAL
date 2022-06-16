@@ -83,14 +83,10 @@ Below you can see some generated whole-body motions that walk and grasp 3D objec
 
 
 
-[//]: # (For more details check out the YouTube video below.)
+For more details check out the YouTube video below.
 
-[//]: # ()
-[//]: # (|                          Video                           |)
+[![Video](images/video_teaser_play.png)](https://www.youtube.com/watch?v=A7b8DYovDZY)
 
-[//]: # (|:--------------------------------------------------------:|)
-
-[//]: # (| [![Video]&#40;images/vvv.png&#41;]&#40;https://youtu.be/s5syYMxmNHA&#41; |  )
 
 
 ## Table of Contents
