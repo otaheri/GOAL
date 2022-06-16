@@ -841,12 +841,12 @@ class Trainer:
 def inference():
     instructions = ''' 
                 Please do the following steps before starting the GNet training:
-                1. Download the processed data from GOAL website or download GRAB dataset and process
-                    it yourself.
-                2. Set the dataset_dir and work_dir to the correct folders.
+                1. Download GRAB dataset and process GNet dataset using the /data/process_gnet_data.py.
+                2. Set the grab_dir and work_dir.
                 3. Set the model-path to the folder containing SMPL-X body mdels.
-                3. Change the MNet configuration file directly if you want to change the training configs (lr, batch_size, etc).  
+                4. Change the GNet configuration file directly if you want to change the training configs (lr, batch_size, etc).  
                     '''
+    print(instructions)
 
     import argparse
 

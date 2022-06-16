@@ -16,8 +16,6 @@
 import os
 import shutil
 import sys
-sys.path.append('/is/ps2/otaheri/code_repos/cvpr21')
-sys.path.append('/is/ps2/otaheri/code_repos/cvpr21/GOAL')
 sys.path.append('.')
 sys.path.append('..')
 import json
@@ -32,7 +30,6 @@ from tools.train_tools import EarlyStopping
 
 
 from torch import nn, optim
-from torch.utils.data import DataLoader
 
 from pytorch3d.structures import Meshes
 from tensorboardX import SummaryWriter
@@ -86,8 +83,6 @@ class Trainer:
         starttime = datetime.now().replace(microsecond=0)
         makepath(cfg.work_dir, isfile=False)
         logger_path = makepath(os.path.join(cfg.work_dir, '%s_%s.log' % (cfg.expr_ID, 'train' if not inference else 'test')), isfile=True)
-        # logger = makelogger(logger_path).info
-        # self.logger = logger
 
         logger.add(logger_path,  backtrace=True, diagnose=True)
         logger.add(lambda x:x,
@@ -105,7 +100,6 @@ class Trainer:
 
         stime = datetime.now().replace(microsecond=0)
         shutil.copy2(sys.argv[0], os.path.join(cfg.work_dir, os.path.basename(sys.argv[0]).replace('.py', '_%s.py' % datetime.strftime(stime, '%Y%m%d_%H%M'))))
-        # self.d_cfg = Config(default_cfg_path=cfg.dataset_cfg) #dataset config
 
         use_cuda = torch.cuda.is_available()
         if use_cuda:
@@ -678,9 +672,6 @@ class Trainer:
 
         prev_lr = np.inf
 
-        # lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, 'min', factor=.2, patience=8)
-        # early_stopping = EarlyStopping(patience=16, trace_func=self.logger)
-
         for epoch_num in range(1, n_epochs + 1):
             self.logger('--- starting Epoch # %03d' % epoch_num)
 
@@ -819,80 +810,6 @@ class Trainer:
                 sp_anim.add_frame([sbj_cnet, sbj_opt, obj_i, grnd_mesh], ['course_grasp', 'refined_grasp', 'object', 'ground_mesh'])
             ############################
             sp_anim.save_animation(movie_path)
-
-
-def evaluate():
-
-
-    expr_ID = 'V00_01_no_contact_w_edge_offset_n1024'
-    expr_ID = 'V01_01_no_contact_w_edge_offset_n1024'
-
-    expr_ID = 'V02_02_no_contact_w_edge_offset_n1024'
-
-    expr_ID = 'V03_01_no_contact_w_edge_offset_n1024'
-
-    cfg_path = f'/is/ps3/otaheri/iccv21/trained_models/mlp_sampled_xyz/{expr_ID}/{expr_ID}.yaml'
-    cfg = OmegaConf.load(cfg_path)
-    cfg.batch_size = 1
-    tester = Trainer(cfg=cfg, inference=True)
-    tester.evaluate(ds_name='test')
-
-def inference():
-    instructions = ''' 
-                Please do the following steps before starting the GNet training:
-                1. Download the processed data from GOAL website or download GRAB dataset and process
-                    it yourself.
-                2. Set the dataset_dir and work_dir to the correct folders.
-                3. Set the model-path to the folder containing SMPL-X body mdels.
-                3. Change the MNet configuration file directly if you want to change the training configs (lr, batch_size, etc).  
-                    '''
-
-    import argparse
-    from configs.GNet_config import conf as cfg
-
-    parser = argparse.ArgumentParser(description='GNet-Training')
-
-    parser.add_argument('--work-dir',
-                        # required=True,
-                        default=f'/is/ps3/otaheri/iccv21/trained_models/grasp_static/cvae_static',
-                        type=str,
-                        help='The path to the folder to save results')
-
-    parser.add_argument('--dataset-dir',
-                        # required=True,
-                        # default=f'/ps/project/grab/cvpr21/DATA/grasp_motion_w_transformer/V05_sample_verts_no_transf_deltas',
-                        default=f'/ps/project/grab/cvpr21/DATA/grasp_static/V05_sample_verts_no_transf_deltas',
-                        type=str,
-                        help='The path to the folder that contains GOAL data')
-
-    parser.add_argument('--smplx-path',
-                        # required=True,
-                        default='/ps/project/grab/body_models/models/',
-                        type=str,
-                        help='The path to the folder containing SMPL-X model downloaded from the website')
-
-    parser.add_argument('--expr-ID', default=None, type=str,
-                        help='Training ID')
-
-
-    cmd_args = parser.parse_args()
-
-    if cmd_args.expr_ID is None:
-        cfg_path = f'configs/GNet_Orig.yaml'
-        cfg = OmegaConf.load(cfg_path)
-    else:
-        expr_ID = cmd_args.expr_ID
-        work_dir = cmd_args.work_dir
-        cfg_path = os.path.join(work_dir,f'{expr_ID}/{expr_ID}.yaml')
-        cfg = OmegaConf.load(cfg_path)
-
-    cfg.datasets.dataset_dir = cmd_args.dataset_dir
-    cfg.work_dir = cfg.output_folder = cmd_args.work_dir
-    cfg.results_base_dir = f'/is/ps3/otaheri/iccv21/trained_models_results/grasp_static/cvae_static'
-
-    cfg.batch_size = 1
-    tester = Trainer(cfg=cfg, inference=True)
-    tester.inference_generate()
 
 
 def train():

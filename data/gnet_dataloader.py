@@ -207,16 +207,3 @@ def build_dataloader(dataset: torch.utils.data.Dataset,
     )
     return data_loader
 
-
-if __name__=='__main__':
-
-
-    expr_id = 'V02'
-    data_path = f'/ps/project/grab/cvpr21/processed_motion_data/{expr_id}'
-    data_path = '/ps/project/grab/cvpr21/DATA/grasp_static/GNet_release'
-
-    ds = LoadData(data_path, split_name='val')
-    bs = 256
-    dataloader = data.DataLoader(ds, batch_size=bs, shuffle=True, num_workers=1, drop_last=True)
-    print('hi')
-

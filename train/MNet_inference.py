@@ -794,40 +794,16 @@ class Trainer:
                 sp_anim.save_animation(movie_path)
             ############################
 
-
-def evaluate():
-    import pandas as pd
-
-
-    expr_ID = 'MNet_Orig'
-
-
-    cfg_path = f'/is/ps3/otaheri/iccv21/trained_models/grasp_motion/mlp_pose/{expr_ID}/{expr_ID}.yaml'
-    cfg = OmegaConf.load(cfg_path)
-    cfg.batch_size = 1
-    tester = Trainer(cfg=cfg, inference=True)
-    results_test = tester.evaluate(ds_name='test')
-    results_test = pd.DataFrame(list(results_test.items()), columns=['loss', 'value'])
-
-    with open(cfg_path.replace(f'{expr_ID}.yaml','losses_testset.txt' ), 'w') as f:
-        print(results_test, file=f)
-
-    results_val = tester.evaluate(ds_name='val')
-    results_val = pd.DataFrame(list(results_val.items()), columns=['loss', 'value'])
-
-    with open(cfg_path.replace(f'{expr_ID}.yaml', 'losses_valset.txt'), 'w') as f:
-        print(results_val, file=f)
-
 def inference():
 
     instructions = ''' 
-            Please do the following steps for MNet inference:
-            1. Download the processed data from GOAL website or download GRAB dataset and process
-                it yourself.
-            2. Set the dataset_dir and work_dir to the correct folders.
-            3. Set the model-path to the folder containing SMPL-X body mdels.
-            3. Change the MNet configuration file directly if you want to change the training configs (lr, batch_size, etc).  
-                '''
+                    Please do the following steps before starting the MNet training:
+                    1. Download GRAB dataset and process GNet dataset using the /data/process_mnet_data.py.
+                    2. Set the grab_path and work_dir.
+                    3. Set the model-path to the folder containing SMPL-X body mdels.
+                    4. Change the GNet configuration file directly if you want to change the training configs (lr, batch_size, etc).  
+                        '''
+    print(instructions)
 
     import argparse
 
