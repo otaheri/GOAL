@@ -1,5 +1,5 @@
 
-This repo is the official implementation for the CVPR2202 paper "GOAL: Generating 4D Whole-Body Motion for Hand-Object Grasping".
+This repo is the official implementation for the CVPR2022 paper "GOAL: Generating 4D Whole-Body Motion for Hand-Object Grasping".
 
 
 <p align="center">
