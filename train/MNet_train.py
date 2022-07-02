@@ -459,7 +459,7 @@ class Trainer:
             f_verts_gt = batch['verts'][:, 11:11 + self.n_out_frames][females]
 
             f_params = {k: v[females].reshape([FN * self.n_out_frames] + list(v.shape[2:])) for k, v in bparams.items()}
-            f_params['v_template'] = v_template[females].reshape(-1, 10475, 3)
+            self.female_model['v_template'] = v_template[females].reshape(-1, 10475, 3)
             f_output = self.female_model(**f_params)
             f_verts = f_output.vertices[:, self.verts_ids].reshape(f_verts_gt.shape)
 
@@ -470,7 +470,7 @@ class Trainer:
             m_verts_gt = batch['verts'][:, 11:11 + self.n_out_frames][males]
 
             m_params = {k: v[males].reshape([MN * self.n_out_frames] + list(v.shape[2:])) for k, v in bparams.items()}
-            m_params['v_template'] = v_template[males].reshape(-1, 10475, 3)
+            self.male_model['v_template'] = v_template[males].reshape(-1, 10475, 3)
             m_output = self.male_model(**m_params)
             m_verts = m_output.vertices[:, self.verts_ids].reshape(m_verts_gt.shape)
 
