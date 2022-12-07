@@ -394,7 +394,7 @@ class Trainer:
         if FN > 0:
 
             f_params = {k: v[females] for k, v in bparams.items()}
-            self.female_model['v_template'] = v_template[females]
+            self.female_model.v_template = v_template[females].clone()
             f_output = self.female_model(**f_params)
             f_verts = f_output.vertices
 
@@ -420,7 +420,7 @@ class Trainer:
         if MN > 0:
 
             m_params = {k: v[males] for k, v in bparams.items()}
-            self.male_model['v_template'] = v_template[males]
+            self.male_model.v_template = v_template[males].clone()
             m_output = self.male_model(**m_params)
             m_verts = m_output.vertices
             cnet_output['m_verts_full'] = m_verts
@@ -562,13 +562,13 @@ class Trainer:
                                   d62rot=False)
         if FN > 0:
             f_params_gt = {k: v[females] for k, v in params_gt.items()}
-            self.female_model['v_template'] = v_template[females]
+            self.female_model.v_template = v_template[females].clone()
             f_output_gt = self.female_model(**f_params_gt)
             f_verts_gt = f_output_gt.vertices
 
         if MN > 0:
             m_params_gt = {k: v[males] for k, v in params_gt.items()}
-            self.male_model['v_template'] = v_template[males]
+            self.male_model.v_template = v_template[males].clone()
             m_output_gt = self.male_model(**m_params_gt)
             m_verts_gt = m_output_gt.vertices
 
